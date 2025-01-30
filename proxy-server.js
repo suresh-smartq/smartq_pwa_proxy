@@ -6,7 +6,7 @@ const morgan = require("morgan");
 const app = express();
 
 //Update the cookie and location below
-const cookie ="cookie=2NPiz9LQ19_q2dHU1quh2N7O1dzV5uDWmsTR4Jyd2suUoNjansahkZPUwpTYoceo2dacnKHGmKqWnKaZmNXa2qLHzsKS18Kc2KKaoaSknp6kw8fYwpbaocfQq6meoJ-Sj6OSkaiegp-rrpyWppqXp5qVrqSS063XnJ3RxJvVmMatnZuoqtbPyKPDm9eYxtqdmKbVqg==";
+const cookie ="cookie=0sXqzsPc8ujR2OCZoufJyenWw-Ho5ZrI286dp8eWqp_E0NWsoMrOw8WplZeonMXV19fOy6CXxKaVl9rPxdOt1qDKosaaqpLIrc6So6eqoZmcmpSrw8mvypek2q-flpmRk6CTmZaZmqmmraaenJqZqJifq57D06bXoZmik5OomZuqn5KmpKyemdGRkqSanayalqA=";
 const location = "qateam";
 
 app.use(morgan("\n:method :status \n:url :response-time ms"));
