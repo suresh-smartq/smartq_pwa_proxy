@@ -5,16 +5,11 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const app = express();
 
-//Update the cookie and location below
-const cookie ="cookie=0sXqzsPc8ujR2OCZoufJyenWw-Ho5ZrI286dp8eWqp_E0NWsoMrOw8WplZeonMXV19fOy6CXxKaVl9rPxdOt1qDKosaaqpLIrc6So6eqoZmcmpSrw8mvypek2q-flpmRk6CTmZaZmqmmraaenJqZqJifq57D06bXoZmik5OomZuqn5KmpKyemdGRkqSanayalqA=";
-const location = "qateam";
-
-app.use(morgan("\n:method :status \n:url :response-time ms"));
-
-// //Issue with body-parser
-// // Enable body parsing
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+/// Config Server
+/// Updating Cookie and location are optional now
+var cookie = "";
+var location = ""; //Internal location id should be used ( example for marval => marval123 )
+const target = "https://ukdemo.thesmartq.com/";
 
 // Enable CORS
 var whitelist = [
@@ -23,6 +18,14 @@ var whitelist = [
   "http://localhost:4003",
   "https://web.postman.co",
 ];
+
+// Enable logging
+app.use(morgan("\n:method :status \n:url :response-time ms"));
+
+// //Issue with body-parser
+// // Enable body parsing
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
   cors({
@@ -35,8 +38,8 @@ app.use(
 
 // Middleware to update the request headers
 const requestConverterMiddleWare = (req, res, next) => {
-  req.headers["cookie"] = cookie;
-  req.headers["smartq_location"] = location;
+  req.headers["cookie"] ??= cookie;
+  req.headers["smartq_location"] ??= location;
 
   try {
     if (req.url.split("?").isNotEmpty) {
@@ -60,18 +63,38 @@ const requestConverterMiddleWare = (req, res, next) => {
 app.use(
   requestConverterMiddleWare,
   createProxyMiddleware({
-    target: "https://ukpreprod.thesmartq.com",
+    target: target,
     changeOrigin: true,
     logLevel: "debug",
+    secure: false,
     on: {
       proxyReq: (proxyReq, req, res) => {
         // console.log("\nProxyReq headers:", proxyReq._headers);
         // console.log("\nProxyReq body:", req.body);
       },
       proxyRes: (proxyRes, req, res, next) => {
+        //Verify user and get the cookie & location
+        try {
+          if (
+            req.url === "/v2/app/user/verify" &&
+            proxyRes.headers["set-cookie"]?.length > 0
+          ) {
+            // Set cookie to Server
+            cookie = proxyRes.headers["set-cookie"][0].split(";")[0];
+            // Set location to Server
+            location = req.headers["smartq_location"];
+            //Try to set cookie to client
+            res.cookie("cookie", cookie.split("=")[1], {
+              maxAge: 900000,
+              httpOnly: true,
+              SameSite: "none",
+            });
+          }
+        } catch (error) {
+          console.log("Error on Verify user => " + error);
+        }
         // console.log("\nProxyRes statusCode:", proxyRes.statusCode);
         // console.log("\nProxyRes res:", res.body);
-        // next()
       },
       error: (err, req, res) => {
         /* handle error */
