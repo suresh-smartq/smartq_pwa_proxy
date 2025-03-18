@@ -1,13 +1,13 @@
 {
   "name": "smartq_pwa_proxy",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "proxy-server.js",
   "scripts": {
     "start": "node proxy-server.js",
     "dev": "nodemon proxy-server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Suresh Kumar",
   "license": "ISC",
   "description": "",
   "dependencies": {

@@ -27,7 +27,9 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
-      "args": ["--web-port=4000"]
+      //4000 to 4003 multiple instance support
+      //update --web-renderer base on your project
+      "args": ["--web-port=4000", "--web-renderer=canvaskit"] 
     },
     {
       "name": "Launch Current Opened File",
