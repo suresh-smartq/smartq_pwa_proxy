@@ -2,7 +2,7 @@
   // Use IntelliSense to learn about possible attributes.
   // Hover to view descriptions of existing attributes.
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "0.2.0",
+  "version": "0.3.0",
   "compounds": [
     {
       "name": "Start Flutter Web & Proxy",
@@ -38,15 +38,21 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
+      "deviceId": "chrome",
+      //4000 to 4003 multiple instance support
+      //eg: "--web-renderer=canvaskit" Render type base on your project
       "args": ["--web-port=4000"]
     },
     {
       "name": "Start_Proxy_Server",
       "type": "node",
       "request": "launch",
-      "program": "../proxy/proxy-server.js", //Update your path here 
+      "program": "../smartq_pwa_proxy/proxy-server.js",
       "console": "integratedTerminal",
-      "runtimeArgs": ["--inspect=9229"]
+      "runtimeArgs": ["--inspect=9229"],
+      "args": [
+        "https://ukdemo.thesmartq.com/" //Target Server URL
+      ]
     }
   ]
 }
