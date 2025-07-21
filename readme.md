@@ -49,6 +49,22 @@ Follow these instructions to get the proxy server up and running on your local m
 
   ```
 
+  or 
+
+  ```
+   //For PWA debugging only workes on localhost and port 4000
+    if (kDebugMode && kIsWeb) {
+      try {
+        final base = Uri.base;
+        if (base.port == 4000 && base.host == 'localhost') {
+          _appUtils.baseUrl = 'http://localhost:3000/';
+        }
+      } catch (e) {
+        Log.d('Error in _getUrl(PWA debugging) : $e');
+      }
+    }
+  ```
+
 - To configure VS Code for Flutter Pwa project, create a `.vscode/launch.json` file with the following content:
 
   ```json
@@ -83,15 +99,40 @@ const target = "https://ukdemo.thesmartq.com/";
 
 ### Running the Proxy
 
-To start the proxy server, run the following command:
+The proxy server now supports command line arguments to specify the target URL. Here are the different ways to run it:
+
+#### Using npm scripts (recommended):
 
 ```sh
-// Prod
+# Start with default target (ukdemo.thesmartq.com)
+npm start
+
+# Start with demo target
+npm run start:demo
+
+# Start with pre-production target
+npm run start:preprod
+
+# Start with production target
+npm run start:prod
+
+# Start with custom target URL
+npm run start:custom -- https://your-custom-domain.com/
+```
+
+#### Using node directly:
+
+```sh
+# Start with default target (ukdemo.thesmartq.com)
 node proxy-server.js
 
-//Dev [Auto restart support]
-nodemon proxy-server.js
+# Start with custom target URL
+node proxy-server.js https://your-custom-domain.com/
+
+# Development mode with auto-restart
+nodemon proxy-server.js https://your-custom-domain.com/
 ```
+**Note:** The target URL must start with `http://` or `https://`. If no target URL is provided, it defaults to `https://ukdemo.thesmartq.com/`.
 
 ### Running the Flutter Web App
 

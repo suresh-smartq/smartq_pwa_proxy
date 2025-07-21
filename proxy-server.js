@@ -9,7 +9,19 @@ const app = express();
 /// Updating Cookie and location are optional now
 var cookie = "";
 var location = ""; //Internal location id should be used ( example for marval => marval123 )
-const target = "https://ukdemo.thesmartq.com/";
+
+// Get target URL from command line arguments or use default
+const target = process.argv[2] || "https://ukdemo.thesmartq.com/";
+
+// Validate target URL format
+if (!target.startsWith('http://') && !target.startsWith('https://')) {
+  console.error('Error: Target URL must start with http:// or https://');
+  console.error('Usage: node proxy-server.js [target-url]');
+  console.error('Example: node proxy-server.js https://ukdemo.thesmartq.com/');
+  process.exit(1);
+}
+
+console.log(`Proxy target: ${target}`);
 
 // Enable CORS
 var whitelist = [

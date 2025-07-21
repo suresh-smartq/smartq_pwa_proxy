@@ -4,7 +4,11 @@
   "main": "proxy-server.js",
   "scripts": {
     "start": "node proxy-server.js",
-    "dev": "nodemon proxy-server.js"
+    "dev": "nodemon proxy-server.js",
+    "start:demo": "node proxy-server.js https://ukdemo.thesmartq.com/",
+    "start:preprod": "node proxy-server.js https://ukpreprod.thesmartq.com/",
+    "start:prod": "node proxy-server.js https://thesmartq.com/",
+    "start:custom": "echo 'Usage: npm run start:custom -- <target-url>' && node proxy-server.js"
   },
   "keywords": [],
   "author": "Suresh Kumar",
@@ -19,5 +23,11 @@
   },
   "devDependencies": {
     "nodemon": "3.1.9"
+  },
+  "pkg": {
+    "scripts": "build/**/*.js",
+    "assets": "views/**/*",
+    "targets": [ "node18-linux-arm64","node18-macos-x64" ],
+    "outputPath": "dist"
   }
 }
