@@ -13,11 +13,19 @@ var location = ""; //Internal location id should be used ( example for marval =>
 // Get target URL from command line arguments or use default
 const target = process.argv[2] || "https://ukdemo.thesmartq.com/";
 
+// Optional arg 3: cookie value. When provided, server uses it for proxied requests.
+const cookieArg = process.argv[3];
+if (cookieArg) {
+  cookie = cookieArg;
+  console.log(`Using cookie from arg 3: ${cookie.length > 50 ? cookie.substring(0, 50) + "..." : cookie}`);
+}
+
 // Validate target URL format
 if (!target.startsWith('http://') && !target.startsWith('https://')) {
   console.error('Error: Target URL must start with http:// or https://');
-  console.error('Usage: node proxy-server.js [target-url]');
+  console.error('Usage: node proxy-server.js [target-url] [cookie]');
   console.error('Example: node proxy-server.js https://ukdemo.thesmartq.com/');
+  console.error('Example: node proxy-server.js https://ukdemo.thesmartq.com/ "cookie=xxx..."');
   process.exit(1);
 }
 
